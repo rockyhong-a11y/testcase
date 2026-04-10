@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>붉은사막 — 어비스 흔적 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0b09;--panel:#161210;--card:#1e1813;--b:#3a2e1f;
+  --bg2:#c8832a;--a:#e8943a;--a2:#d4b483;--tx:#e8d9be;
+  --dim:#8a7a62;--faint:#4a3e2e;
+  --nx:#4a9edd;--st:#c8832a;--ab:#9b59b6;--ok:#27ae60;
+  --st-top:env(safe-area-inset-top,0px);--st-bot:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:16px}
+body{background:var(--bg);color:var(--tx);font-family:'Noto Serif KR',serif;min-height:100vh;
+  background-image:radial-gradient(ellipse at 20% 0%,rgba(200,131,42,.07) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 100%,rgba(155,89,182,.06) 0%,transparent 50%);
+  -webkit-font-smoothing:antialiased}
+header{position:relative;text-align:center;padding:calc(44px + var(--st-top)) 20px 28px;
+  border-bottom:1px solid var(--b);overflow:hidden}
+header::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(200,131,42,.12) 0%,transparent 70%);pointer-events:none}
+.eyebrow{font-family:'Cinzel',serif;font-size:11px;letter-spacing:4px;color:var(--a);margin-bottom:10px;opacity:.8}
+header h1{font-family:'Cinzel',serif;font-size:clamp(20px,5vw,38px);font-weight:700;
+  color:var(--a2);letter-spacing:2px;line-height:1.2;text-shadow:0 0 40px rgba(200,131,42,.4)}
+header h1 em{display:block;font-style:normal;color:var(--dim);font-size:.48em;letter-spacing:3px;margin-top:6px}
+.hline{display:flex;align-items:center;gap:14px;justify-content:center;margin-top:18px}
+.hline::before,.hline::after{content:'';flex:1;max-width:100px;height:1px}
+.hline::before{background:linear-gradient(90deg,transparent,var(--bg2))}
+.hline::after{background:linear-gradient(90deg,var(--bg2),transparent)}
+.hline span{color:var(--a);font-size:16px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;
+  padding:12px 18px;border-bottom:1px solid var(--b);background:rgba(14,11,9,.6)}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--dim)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:3px;
+  font-size:10.5px;font-weight:700;letter-spacing:.4px;border:1px solid}
+.bnx{color:var(--nx);border-color:rgba(74,158,221,.4);background:rgba(74,158,221,.1)}
+.bst{color:var(--st);border-color:rgba(200,131,42,.4);background:rgba(200,131,42,.1)}
+.bab{color:var(--ab);border-color:rgba(155,89,182,.4);background:rgba(155,89,182,.1)}
+.notice{margin:14px auto;max-width:860px;padding:11px 15px;
+  border:1px solid rgba(200,131,42,.25);border-left:3px solid var(--a);border-radius:4px;
+  background:rgba(200,131,42,.06);font-size:12px;color:var(--dim);line-height:1.7}
+.notice strong{color:var(--a2)}
+.prog-wrap{max-width:1148px;margin:0 auto;padding:0 18px 14px}
+.prog-label{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim);margin-bottom:5px}
+.prog-bar{height:4px;background:var(--b);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--a),#f0b060);transition:width .4s}
+.tab-wrap{display:flex;overflow-x:auto;border-bottom:1px solid var(--b);padding:0 18px;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tab-wrap::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:12px 16px;font-family:'Cinzel',serif;font-size:11.5px;
+  letter-spacing:.8px;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;
+  transition:all .22s;white-space:nowrap;user-select:none}
+.tab:hover{color:var(--a2)}.tab.active{color:var(--a);border-bottom-color:var(--a)}
+.tab .cnt{display:inline-block;margin-left:5px;padding:1px 6px;border-radius:10px;
+  background:var(--b);font-size:9.5px;color:var(--dim);font-family:'Noto Serif KR',serif;letter-spacing:0}
+.tab.active .cnt{background:rgba(200,131,42,.2);color:var(--a)}
+.panel{display:none;padding:22px 18px 56px;max-width:1100px;margin:0 auto}
+.panel.active{display:block;animation:fadeIn .28s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.region-desc{font-size:12px;color:var(--dim);margin-bottom:18px;padding:12px 14px;
+  border-left:2px solid var(--bg2);background:rgba(200,131,42,.04);border-radius:0 4px 4px 0;line-height:1.8}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+.card{position:relative;background:var(--card);border:1px solid var(--b);border-radius:6px;
+  padding:14px;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .18s;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,131,42,.3),transparent);opacity:0;transition:opacity .2s}
+.card:hover,.card:active{border-color:rgba(200,131,42,.5);box-shadow:0 4px 18px rgba(200,131,42,.08);transform:translateY(-1px)}
+.card:hover::before{opacity:1}
+.card.completed{opacity:.45;border-color:rgba(39,174,96,.3)}
+.card-head{display:flex;align-items:flex-start;gap:9px;margin-bottom:8px}
+.card-num{font-family:'Cinzel',serif;font-size:10px;color:var(--faint);min-width:24px;padding-top:2px}
+.card-name{flex:1;font-size:13.5px;font-weight:600;color:var(--tx);line-height:1.4}
+.card-chk{flex-shrink:0;width:22px;height:22px;border-radius:50%;border:1px solid var(--b);
+  display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--faint);
+  cursor:pointer;transition:all .18s;user-select:none}
+.card-chk:hover{border-color:var(--ok);color:var(--ok)}
+.card.completed .card-chk{border-color:var(--ok);color:var(--ok);background:rgba(39,174,96,.12)}
+.card-meta{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.card-clue{font-size:11.5px;color:var(--dim);line-height:1.6;padding-top:7px;border-top:1px solid var(--b)}
+.card-map-hint{margin-top:8px;font-size:10px;color:var(--faint);font-family:'Cinzel',serif;
+  letter-spacing:.5px;display:flex;align-items:center;gap:7px}
+.card-map-hint::before{content:'';flex:1;height:1px;background:var(--b)}
+footer{text-align:center;padding:18px 18px calc(18px + var(--st-bot));
+  font-size:11px;color:var(--faint);border-top:1px solid var(--b);letter-spacing:.5px}
+footer a{color:var(--a);text-decoration:none}
+
+/* MAP OVERLAY */
+.map-overlay{position:fixed;inset:0;z-index:900;display:flex;flex-direction:column;
+transform:translateY(100%);transition:transform .36s cubic-bezier(.4,0,.2,1);background:#090705}
+.map-overlay.open{transform:translateY(0)}
+.mo-hdr{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
+padding:calc(12px + var(–st-top)) 18px 12px;border-bottom:1px solid var(–b);
+background:var(–panel);gap:12px;z-index:10}
+.mo-loc{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.mo-region{font-family:‘Cinzel’,serif;font-size:9px;letter-spacing:2px;color:var(–faint)}
+.mo-name{font-family:‘Cinzel’,serif;font-size:15px;font-weight:600;color:var(–a2);
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mo-close{flex-shrink:0;display:flex;align-items:center;gap:5px;padding:9px 16px;
+border:1px solid var(–b);border-radius:4px;background:var(–card);color:var(–dim);
+font-family:‘Noto Serif KR’,serif;font-size:13px;cursor:pointer;transition:all .18s}
+.mo-close:hover,.mo-close:active{border-color:var(–a);color:var(–a)}
+.mo-map{flex:1;position:relative;overflow:hidden;background:#0d1520;touch-action:none;min-height:120px}
+.mo-inner{position:absolute;transform-origin:0 0;will-change:transform;cursor:grab}
+.mo-inner:active{cursor:grabbing}
+.mo-img{display:block;width:100%;height:100%;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.mk{position:absolute;width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(255,255,255,0.9);
+display:flex;align-items:center;justify-content:center;
+font-family:‘Cinzel’,serif;font-size:8px;font-weight:700;color:#fff;
+cursor:pointer;transform:translate(-50%,-50%);transition:transform .15s,filter .15s;z-index:5;
+box-shadow:0 2px 8px rgba(0,0,0,.5)}
+.mk span{pointer-events:none;line-height:1}
+.mk:hover,.mk:active{transform:translate(-50%,-50%) scale(1.35)}
+.mk.sel{z-index:10;transform:translate(-50%,-50%) scale(1.5);
+filter:brightness(1.3) drop-shadow(0 0 8px rgba(255,255,255,0.8))}
+.mk.sel::after{content:’’;position:absolute;inset:-4px;border-radius:50%;
+border:2.5px solid white;animation:mkRing 1.5s ease-out infinite}
+@keyframes mkRing{0%{transform:scale(1);opacity:.9}100%{transform:scale(2.6);opacity:0}}
+.mk.done{opacity:.4;filter:grayscale(0.6)}
+.zoom-btns{position:absolute;bottom:14px;left:14px;display:flex;flex-direction:column;gap:3px;z-index:20}
+.zoom-btn{width:40px;height:40px;border:1px solid rgba(58,46,31,.9);border-radius:5px;
+background:rgba(10,7,5,.92);color:var(–dim);font-size:18px;
+display:flex;align-items:center;justify-content:center;
+cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+transition:all .15s;user-select:none;font-weight:bold}
+.zoom-btn:hover,.zoom-btn:active{color:var(–a);border-color:var(–a)}
+.mo-nav{position:absolute;bottom:14px;right:14px;display:flex;flex-direction:column;gap:7px;z-index:20}
+.mo-btn{padding:8px 13px;border:1px solid rgba(58,46,31,.9);border-radius:4px;
+background:rgba(10,7,5,.92);color:var(–dim);font-family:‘Noto Serif KR’,serif;
+font-size:11.5px;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+white-space:nowrap;transition:all .15s}
+.mo-btn:hover,.mo-btn:active{border-color:var(–a);color:var(–a)}
+.mo-btn.ok{border-color:rgba(39,174,96,.5);color:var(–ok);background:rgba(39,174,96,.09)}
+.mo-ftr{flex-shrink:0;padding:11px 18px calc(11px + var(–st-bot));
+border-top:1px solid var(–b);background:var(–panel)}
+.mo-badge{margin-bottom:5px}
+.mo-clue{font-size:12px;color:var(–dim);line-height:1.65}
+</style>
+
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Crimson Desert · 파이웰 대륙</p>
+  <h1>어비스 흔적 위치 가이드<em>ABYSS NEXUS LOCATION GUIDE</em></h1>
+  <div class="hline"><span>⟡</span></div>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><span class="badge bnx">● 어비스의 흔적</span> 즉시 활성화</div>
+  <div class="legend-item"><span class="badge bst">◆ 어비스 표석</span> 기믹 해제</div>
+  <div class="legend-item"><span class="badge bab">✦ 어비스 내부</span> 차원 전용</div>
+  <div class="legend-item" style="color:var(--dim)">카드 클릭 → 지도 &nbsp;|&nbsp; ○ → 완료</div>
+</div>
+
+<div style="max-width:1100px;margin:0 auto;padding:0 18px">
+  <div class="notice">
+    <strong>빠른이동 조건</strong> — 전투 중·스토리 미션 중 불가. &nbsp;|&nbsp;
+    <strong>발견 팁</strong> — 높은 곳에서 <strong>빛 반사</strong>로 근방 흔적 위치 확인.
+  </div>
+</div>
+
+<div class="prog-wrap" style="margin-bottom:14px">
+  <div class="prog-label">
+    <span id="prog-text">전체 진행도 (0%)</span>
+    <span id="prog-count">0 / 36</span>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<div class="tab-wrap">
+  <div class="tab active" data-tab="hernand">에르난드 <span class="cnt" id="cnt-0"></span></div>
+  <div class="tab" data-tab="pailune">페일룬 <span class="cnt" id="cnt-1"></span></div>
+  <div class="tab" data-tab="demeniss-n">데메니스 북부 <span class="cnt" id="cnt-2"></span></div>
+  <div class="tab" data-tab="demeniss-s">데메니스 남부 + 델레시아 <span class="cnt" id="cnt-3"></span></div>
+  <div class="tab" data-tab="abyss">어비스 <span class="cnt" id="cnt-4"></span></div>
+</div>
+
+<div class="panel active" id="panel-hernand">
+  <div class="region-desc">게임의 시작 지역. 산과 강이 풍부한 에르난드 공국. 빠른 이동 포인트를 초반에 확보해 두면 이후 퀘스트 이동 부담이 크게 줄어든다.</div>
+  <div class="grid" id="grid-hernand"></div>
+</div>
+<div class="panel" id="panel-pailune">
+  <div class="region-desc">북유럽·스코틀랜드 풍 지역. 클리프의 고향이자 회색갈기의 터전. 설원·숲 지형에서 흔적을 놓치기 쉽다.</div>
+  <div class="grid" id="grid-pailune"></div>
+</div>
+<div class="panel" id="panel-demeniss-n">
+  <div class="region-desc">파이웰 대륙의 패권국 데메니스 왕국 북부. 초반 진입 시 극도로 적대적. 탈것을 활용한 치고빠지기 전술 권장.</div>
+  <div class="grid" id="grid-demeniss-n"></div>
+</div>
+<div class="panel" id="panel-demeniss-s">
+  <div class="region-desc">데메니스 남부와 인접한 델레시아 지역. 붉은사막을 건너야 닿을 수 있는 고립된 나라로 독특한 어비스 표석 기믹이 특징.</div>
+  <div class="grid" id="grid-demeniss-s"></div>
+</div>
+<div class="panel" id="panel-abyss">
+  <div class="region-desc">파이웰 대륙 전역에 분포한 어비스 입구. 대륙과 분리된 하늘의 섬들로 이어지는 포탈로 메인 스토리 핵심 지역.</div>
+  <div class="grid" id="grid-abyss"></div>
+</div>
+
+<footer>
+  출처: <a href="https://www.inven.co.kr/board/crimson/6511/186" target="_blank">붉은사막 인벤</a>
+  &nbsp;|&nbsp; 전체 맵: <a href="https://mapgenie.io/crimson-desert/maps/pywel" target="_blank">MapGenie</a>
+</footer>
+
+<!-- MAP OVERLAY -->
+
+<div class="map-overlay" id="mapOverlay">
+  <div class="mo-hdr">
+    <div class="mo-loc">
+      <div class="mo-region" id="moRegion"></div>
+      <div class="mo-name" id="moName"></div>
+    </div>
+    <button class="mo-close" id="closeBtn">✕ 닫기</button>
+  </div>
+  <div class="mo-map" id="moMap">
+    <div class="mo-inner" id="moInner">
+      <img class="mo-img" id="mapImg"
+           src="./map.jpg"
+           alt="파이웰 대륙 지도" draggable="false">
+      <div id="markerLayer" style="position:absolute;inset:0"></div>
+    </div>
+    <div class="zoom-btns">
+      <div class="zoom-btn" id="zIn">+</div>
+      <div class="zoom-btn" id="zOut">−</div>
+      <div class="zoom-btn" id="zFit" style="font-size:14px">⟳</div>
+    </div>
+    <div class="mo-nav">
+      <button class="mo-btn" id="btnDone">○ 완료</button>
+    </div>
+  </div>
+  <div class="mo-ftr">
+    <div class="mo-badge" id="moBadge"></div>
+    <div class="mo-clue" id="moClue"></div>
+  </div>
+</div>
+
+<script>
+// Map image dimensions (resized): 1000x769
+const IMG_W = 1000, IMG_H = 769;
+
+// MARKER COLORS per type
+const TC = {nexus:'#2980b9', stone:'#e67e22', abyss:'#8e44ad'};
+const TB = {
+  nexus:'<span class="badge bnx">● 어비스의 흔적</span>',
+  stone:'<span class="badge bst">◆ 어비스 표석</span>',
+  abyss:'<span class="badge bab">✦ 어비스 내부</span>',
+};
+
+// DATA — lx/ly calibrated from actual pin positions in IMG_3205.png (966x743)
+// Coordinates are % of image width/height
+const REGIONS = [
+  { id:'hernand', label:'에르난드', color:'#2980b9', spots:[
+    {name:'에르난드 성 대장간 북쪽', type:'nexus', lx:19.2, ly:40.4, clue:'에르난드 성 내 대장간 기준 북쪽. 원 안에 올라서면 즉시 활성화.'},
+    {name:'킬덴 항아리 공방',         type:'nexus', lx:14.5, ly:53.8, clue:'꼭대기의 탑 기준 북동쪽. 항아리 공방 근처 석판 위.'},
+    {name:'에르난드 성 서문 부근',    type:'nexus', lx:20.7, ly:49.8, clue:'에르난드 성 서쪽 출입구 인근. 초반 메인 퀘스트 동선상.'},
+    {name:'칼페이드 영지 입구',       type:'nexus', lx:10.4, ly:51.8, clue:'에르난드 남부 칼페이드 영지로 이어지는 길목 근처.'},
+    {name:'강변 캠프 북방',           type:'nexus', lx:27.5, ly:48.4, clue:'에르난드 북동부 강줄기 따라 이동 시 발견 가능.'},
+    {name:'숲 속 은신처 표석',        type:'stone', lx:22.3, ly:60.2, clue:'에르난드 동부 숲 내 어비스 표석. 랜턴으로 연결선 확인 후 섭리의 힘 사용.'},
+    {name:'낡은 채석장 부근',         type:'nexus', lx:8.8,  ly:47.0, clue:'에르난드 북서부 채석장 지대. 언덕 위 석판에 위치.'},
+  ]},
+  { id:'pailune', label:'페일룬', color:'#2980b9', spots:[
+    {name:'하얀 대지의 안식처 앞',    type:'nexus', lx:21.7, ly:6.3,  clue:'안식처 앞 광장에서 서쪽으로 이동 시 발견.'},
+    {name:'스코그혼 영혼인도자 캠프', type:'nexus', lx:13.5, ly:23.2, clue:'스코그혼 지역 영혼인도자 NPC 퀘스트 동선 근처.'},
+    {name:'서리 깃든 성터 입구',      type:'nexus', lx:3.6,  ly:4.7,  clue:'페일룬 지역 서리 깃든 성터 진입로 근처.'},
+    {name:'할시우 합수머리 지대',     type:'stone', lx:9.3,  ly:31.4, clue:'합수머리 지형 어비스 표석. 인근 기믹 해제 후 활성화 가능.'},
+    {name:'윈드리지 요새 북서쪽',    type:'nexus', lx:22.8, ly:24.6, clue:'듀헤이븐 지역 윈드리지 요새 기준 북서쪽 어비스 흔적.'},
+    {name:'페일룬 동부 관문',         type:'nexus', lx:6.2,  ly:24.9, clue:'페일룬에서 데메니스 방면으로 이어지는 관문 근처.'},
+    {name:'포로린 마을 남서쪽',       type:'nexus', lx:2.8,  ly:28.5, clue:'포로린 마을 기준 남서쪽, 캐슬우드 유적 방향.'},
+  ]},
+  { id:'demeniss-n', label:'데메니스 북부', color:'#e67e22', spots:[
+    {name:'나이트펠 탐사 캠프',       type:'nexus', lx:49.7, ly:53.8, clue:'나이트펠 캠프 점령 여부와 무관하게 진입 가능.'},
+    {name:'데메니스 성 북문',         type:'nexus', lx:45.6, ly:50.5, clue:'데메니스 성 북쪽 출입구. 대의의 심판관 경비 주의.'},
+    {name:'황혼고리 동굴 인근',       type:'nexus', lx:40.4, ly:61.2, clue:'에르난드~데메니스 경계 황혼고리 동굴 근처.'},
+    {name:'고원 감시탑 동편',         type:'nexus', lx:27.9, ly:39.0, clue:'데메니스 북부 고원 지대 감시탑 동쪽 절벽 아래.'},
+    {name:'데메니스 북부 광산',       type:'stone', lx:37.5, ly:20.2, clue:'북부 채광 지역 어비스 표석. 기계 기믹. 섭리의 힘으로 전원 연결.'},
+    {name:'강 건너 폐허 지대',        type:'nexus', lx:46.6, ly:57.9, clue:'데메니스 북부 강 건너편 폐허 내 석판.'},
+  ]},
+  { id:'demeniss-s', label:'데메니스 남부 + 델레시아', color:'#e67e22', spots:[
+    {name:'추앙의 성소 남쪽',         type:'stone', lx:78.2, ly:68.6, clue:'델레시아 남동부. 추앙의 성소 진입로 남쪽 사각 탑. 탑 동쪽 벽 지정타로 비밀공간 진입.'},
+    {name:'델레시아 성벽 서문',       type:'nexus', lx:81.8, ly:68.6, clue:'델레시아 도심 서쪽 성벽 출입구 근처 광장.'},
+    {name:'데메니스 남부 전초기지',   type:'nexus', lx:50.7, ly:66.0, clue:'남부 거점 전초기지 해방 후 접근 권장.'},
+    {name:'메아리 절벽 표석',         type:'stone', lx:63.4, ly:68.6, clue:'메아리 절벽 어비스 표석. 인근 퍼즐 해제 필요. 벽면 지정타 기믹.'},
+    {name:'데메니스 남서부 초원',     type:'nexus', lx:44.0, ly:64.6, clue:'델레시아 방면 초원 지대 교차로 근처 언덕.'},
+    {name:'그림자숲 어비스 표석',     type:'stone', lx:40.9, ly:72.0, clue:'그림자숲 내 표석. 바닥 석판 랜턴으로 연결선 확인 후 섭리의 힘 사용.'},
+    {name:'비지오네 외곽 지대',       type:'nexus', lx:77.6, ly:61.2, clue:'챕터 8 관련 비지오네 지역 외곽.'},
+  ]},
+  { id:'abyss', label:'어비스', color:'#8e44ad', spots:[
+    {name:'섭리의 대서고',             type:'abyss', lx:5.4,  ly:54.0, clue:'프롤로그 직후 방문하는 첫 어비스. 클리프가 섭리의 힘을 처음 습득.'},
+    {name:'균형을 잃은 어비스',        type:'abyss', lx:5.4,  ly:59.9, clue:'에르난드 챕터 1. 이후 마을 귀환 시 포탈로 재활용 가능.'},
+    {name:'어비스 - 비밀정원',         type:'abyss', lx:3.1,  ly:66.2, clue:'섭리의 힘으로 환경 오브젝트 조작. 복수의 퍼즐 단계.'},
+    {name:'어비스 - 복수의 문',        type:'abyss', lx:9.8,  ly:64.6, clue:'분기 구조. 특정 조건 달성 시 숨겨진 보물상자 존재.'},
+    {name:'어비스 - 진실의 낭떠러지', type:'abyss', lx:15.3, ly:64.6, clue:'고공 지형. 낙사 주의. 빛 반사로 경로 미리 파악.'},
+    {name:'어비스 - 뿌리의 끝',       type:'abyss', lx:17.6, ly:69.3, clue:'나무 뿌리 형태 지형. 섭리의 힘 빛 모으기로 식물 기믹 해제.'},
+    {name:'어비스 - 진실의 뜰',       type:'abyss', lx:22.8, ly:86.1, clue:'고난이도 퍼즐. 랜턴 연결선 확인 필수. 다중 동력핵 배치.'},
+    {name:'어비스 - 얼음의 요람',     type:'abyss', lx:23.3, ly:93.5, clue:'얼음 속성 기믹. 과냉각 관련 환경 요소 상호작용.'},
+    {name:'어비스 - 고독의 제단',     type:'abyss', lx:68.6, ly:7.4,  clue:"어비스 기어 '기운흡수 신속2' 획득 가능."},
+    {name:'어비스 - 혼돈의 숲',       type:'abyss', lx:83.4, ly:9.0,  clue:'도전과제 연계. 숲 미로 구조. 방향 감각 중요.'},
+    {name:'어비스 - 꿈의 나무',       type:'abyss', lx:61.9, ly:28.9, clue:'불 원소 획득 관련 어비스. 나무 중심부 도달이 핵심.'},
+    {name:'어비스 - 거석 왕관',       type:'abyss', lx:66.8, ly:35.9, clue:'거대 석조물 기믹. 섭리의 힘으로 돌 구조물 재배치.'},
+  ]},
+];
+
+const done = JSON.parse(localStorage.getItem('cd_v6')||'{}');
+let total=0, doneCount=0, selId=null;
+const idx={};
+
+const mLayer = document.getElementById('markerLayer');
+REGIONS.forEach((reg,ri)=>{
+  total += reg.spots.length;
+  const grid = document.getElementById('grid-'+reg.id);
+  document.getElementById('cnt-'+ri).textContent = reg.spots.length;
+  reg.spots.forEach((sp,si)=>{
+    const id = ri+'-'+si;
+    const isDone = !!done[id];
+    if(isDone) doneCount++;
+
+    // CARD
+    const card = document.createElement('div');
+    card.className = 'card'+(isDone?' completed':'');
+    card.dataset.id = id;
+    card.innerHTML = `
+      <div class="card-head">
+        <span class="card-num">#${String(si+1).padStart(2,'0')}</span>
+        <span class="card-name">${sp.name}</span>
+        <span class="card-chk">${isDone?'✓':'○'}</span>
+      </div>
+      <div class="card-meta">${TB[sp.type]}</div>
+      <div class="card-clue">${sp.clue}</div>
+      <div class="card-map-hint">지도에서 보기 →</div>`;
+    card.addEventListener('click', e=>{ if(e.target.classList.contains('card-chk'))return; openMap(id); });
+    card.querySelector('.card-chk').addEventListener('click', e=>{ e.stopPropagation(); toggleDone(id); });
+    grid.appendChild(card);
+
+    // MARKER
+    const mk = document.createElement('div');
+    mk.className = 'mk'+(isDone?' done':'');
+    mk.dataset.id = id;
+    mk.style.cssText = `left:${sp.lx}%;top:${sp.ly}%;background:${TC[sp.type]}`;
+    mk.innerHTML = `<span>${si+1}</span>`;
+    mk.addEventListener('click', e=>{ e.stopPropagation(); openMap(id); });
+    mLayer.appendChild(mk);
+    idx[id] = {reg,sp,card,mk};
+  });
+});
+updateProgress();
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+  });
+});
+
+function openMap(id){
+  const it=idx[id]; if(!it)return;
+  selId=id;
+  document.getElementById('moRegion').textContent = it.reg.label.toUpperCase();
+  document.getElementById('moName').textContent   = it.sp.name;
+  document.getElementById('moBadge').innerHTML    = TB[it.sp.type];
+  document.getElementById('moClue').textContent   = it.sp.clue;
+  refreshDoneBtn();
+  document.querySelectorAll('.mk').forEach(m=>m.classList.remove('sel'));
+  it.mk.classList.add('sel');
+  document.getElementById('mapOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  requestAnimationFrame(()=>setTimeout(()=>panToPercent(it.sp.lx,it.sp.ly),80));
+}
+function closeMap(){
+  document.getElementById('mapOverlay').classList.remove('open');
+  document.body.style.overflow='';
+  setTimeout(fitToViewport,380);
+}
+document.getElementById('closeBtn').addEventListener('click',closeMap);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMap()});
+
+function toggleDone(id){
+  done[id]=!done[id];
+  localStorage.setItem('cd_v6',JSON.stringify(done));
+  doneCount+=done[id]?1:-1;
+  const it=idx[id];if(!it)return;
+  it.card.classList.toggle('completed',!!done[id]);
+  it.card.querySelector('.card-chk').textContent=done[id]?'✓':'○';
+  it.mk.classList.toggle('done',!!done[id]);
+  if(selId===id)refreshDoneBtn();
+  updateProgress();
+}
+function refreshDoneBtn(){
+  if(!selId)return;
+  const b=document.getElementById('btnDone');
+  b.textContent=done[selId]?'✓ 완료됨':'○ 완료 체크';
+  b.classList.toggle('ok',!!done[selId]);
+}
+document.getElementById('btnDone').addEventListener('click',()=>{if(selId)toggleDone(selId)});
+function updateProgress(){
+  const pct=Math.round(doneCount/total*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-count').textContent=doneCount+' / '+total;
+  document.getElementById('prog-text').textContent=`전체 진행도 (${pct}%)`;
+}
+
+// PAN / ZOOM
+const inner=document.getElementById('moInner');
+const moMap=document.getElementById('moMap');
+let S=1,TX=0,TY=0;
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function clampT(s,x,y){
+  const cw=moMap.offsetWidth,ch=moMap.offsetHeight;
+  s=clamp(s,0.25,12);
+  const sw=IMG_W*s,sh=IMG_H*s;
+  const nx=sw<=cw?(cw-sw)/2:clamp(x,cw-sw,0);
+  const ny=sh<=ch?(ch-sh)/2:clamp(y,ch-sh,0);
+  return {s,x:nx,y:ny};
+}
+function applyT(s,x,y,anim){
+  const c=clampT(s,x,y); S=c.s;TX=c.x;TY=c.y;
+  inner.style.transition=anim?'transform .32s cubic-bezier(.25,.46,.45,.94)':'';
+  inner.style.transform=`translate(${TX}px,${TY}px) scale(${S})`;
+}
+function fitToViewport(){
+  const cw=moMap.offsetWidth,ch=moMap.offsetHeight;
+  const s=Math.min(cw/IMG_W,ch/IMG_H)*0.98;
+  applyT(s,(cw-IMG_W*s)/2,(ch-IMG_H*s)/2,true);
+}
+function panToPercent(lx,ly){
+  const cw=moMap.offsetWidth,ch=moMap.offsetHeight;
+  const s=Math.min(cw/IMG_W,ch/IMG_H)*2.8;
+  const mx=(lx/100)*IMG_W*s,my=(ly/100)*IMG_H*s;
+  applyT(s,cw/2-mx,ch/2-my,true);
+}
+function zoomAt(factor){
+  const cw=moMap.offsetWidth,ch=moMap.offsetHeight;
+  const ns=clamp(S*factor,0.25,12);
+  applyT(ns,cw/2-(cw/2-TX)*(ns/S),ch/2-(ch/2-TY)*(ns/S),true);
+}
+document.getElementById('zIn').addEventListener('click',()=>zoomAt(1.6));
+document.getElementById('zOut').addEventListener('click',()=>zoomAt(1/1.6));
+document.getElementById('zFit').addEventListener('click',fitToViewport);
+
+// TOUCH
+let _t=null,_p=null;
+moMap.addEventListener('touchstart',e=>{
+  e.preventDefault();inner.style.transition='';
+  if(e.touches.length===1){_t={sx:e.touches[0].clientX-TX,sy:e.touches[0].clientY-TY};_p=null;}
+  else if(e.touches.length===2){
+    _t=null;
+    const t0=e.touches[0],t1=e.touches[1];
+    _p={d:Math.hypot(t1.clientX-t0.clientX,t1.clientY-t0.clientY),
+         cx:(t0.clientX+t1.clientX)/2,cy:(t0.clientY+t1.clientY)/2,S,TX,TY};
+  }
+},{passive:false});
+moMap.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  if(e.touches.length===1&&_t){applyT(S,e.touches[0].clientX-_t.sx,e.touches[0].clientY-_t.sy,false);}
+  else if(e.touches.length===2&&_p){
+    const t0=e.touches[0],t1=e.touches[1];
+    const d=Math.hypot(t1.clientX-t0.clientX,t1.clientY-t0.clientY);
+    const ns=clamp(_p.S*(d/_p.d),0.25,12);
+    const cx=(t0.clientX+t1.clientX)/2,cy=(t0.clientY+t1.clientY)/2;
+    applyT(ns,cx-(_p.cx-_p.TX)*(ns/_p.S),cy-(_p.cy-_p.TY)*(ns/_p.S),false);
+  }
+},{passive:false});
+moMap.addEventListener('touchend',e=>{e.preventDefault();if(e.touches.length<2)_p=null;if(e.touches.length===0)_t=null;},{passive:false});
+
+// MOUSE
+let _md=false,_ms=null;
+moMap.addEventListener('mousedown',e=>{_md=true;_ms={x:e.clientX-TX,y:e.clientY-TY};inner.style.transition=''});
+window.addEventListener('mousemove',e=>{if(!_md||!_ms)return;applyT(S,e.clientX-_ms.x,e.clientY-_ms.y,false)});
+window.addEventListener('mouseup',()=>{_md=false;_ms=null});
+moMap.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const ns=clamp(S*(e.deltaY<0?1.18:0.85),0.25,12);
+  inner.style.transition='';
+  applyT(ns,e.offsetX-(e.offsetX-TX)*(ns/S),e.offsetY-(e.offsetY-TY)*(ns/S),false);
+},{passive:false});
+
+inner.style.width=IMG_W+'px';
+inner.style.height=IMG_H+'px';
+
+// Fit map when overlay first opens
+new MutationObserver(()=>{
+  if(document.getElementById('mapOverlay').classList.contains('open'))
+    setTimeout(()=>{if(Math.abs(S-1)<0.01&&TX===0&&TY===0)fitToViewport()},60);
+}).observe(document.getElementById('mapOverlay'),{attributes:true,attributeFilter:['class']});
+</script>
+
+</body>
+</html>
