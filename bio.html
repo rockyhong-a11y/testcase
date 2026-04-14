@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RE Village — 전 챕터 보물·퍼즐 맵</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0a0806; --d1:#0f0d09; --d2:#181410; --d3:#201c14;
+  --d4:#2a2419; --d5:#38301f;
+  --bone:#e0d2b6; --parch:#c4af8a;
+  --blood:#8b1a1a; --ember:#c0392b; --gold:#c49a0a; --amber:#e0a015;
+  --c-village:#c49a0a; --c-castle:#8b1a1a; --c-bene:#5a2d8a;
+  --c-moreau:#1a7a4a; --c-factory:#2d5f8a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--bone);font-family:'Noto Sans KR',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.5}
+
+/* HEADER */
+header{text-align:center;padding:40px 20px 24px;position:relative;border-bottom:1px solid rgba(195,150,10,.18)}
+header::before{content:’’;position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(139,26,26,.28) 0%,transparent 60%)}
+.hd-icon{font-size:34px;display:block;animation:pulse 3s ease-in-out infinite;position:relative}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.75;transform:scale(.94)}}
+h1{font-family:‘Cinzel Decorative’,serif;font-size:clamp(17px,3.2vw,33px);font-weight:900;color:var(–bone);letter-spacing:.05em;line-height:1.25;text-shadow:0 0 36px rgba(139,26,26,.45),0 2px 5px rgba(0,0,0,.9);position:relative;margin-top:8px}
+h1 em{color:var(–amber);font-style:normal}
+.orn{display:flex;align-items:center;gap:10px;justify-content:center;margin:12px auto 0;max-width:320px}
+.orn::before,.orn::after{content:’’;flex:1;height:1px;background:linear-gradient(90deg,transparent,var(–blood),transparent)}
+.orn span{color:var(–blood);font-size:13px}
+.sub{font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:.28em;color:var(–parch);opacity:.55;margin-top:5px;position:relative}
+
+/* CHAPTER NAV */
+.cnav{display:flex;flex-wrap:nowrap;background:var(–d1);border-bottom:2px solid var(–d4);position:sticky;top:0;z-index:100;overflow-x:auto}
+.cnav::-webkit-scrollbar{height:3px}.cnav::-webkit-scrollbar-thumb{background:var(–d5)}
+.ctab{font-family:‘Cinzel’,serif;font-size:10.5px;letter-spacing:.12em;padding:13px 18px 11px;border:none;background:transparent;color:var(–parch);opacity:.45;cursor:pointer;transition:all .2s;border-bottom:3px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.ctab:hover{opacity:.75}
+.ctab.active{opacity:1;font-weight:700}
+.ctab[data-ch=“village”].active{color:var(–c-village);border-bottom-color:var(–c-village)}
+.ctab[data-ch=“castle”].active{color:var(–c-castle);border-bottom-color:var(–c-castle)}
+.ctab[data-ch=“bene”].active{color:var(–c-bene);border-bottom-color:var(–c-bene)}
+.ctab[data-ch=“moreau”].active{color:var(–c-moreau);border-bottom-color:var(–c-moreau)}
+.ctab[data-ch=“factory”].active{color:var(–c-factory);border-bottom-color:var(–c-factory)}
+
+/* CHAPTER SECTIONS */
+.chapter{display:none}.chapter.active{display:block}
+
+/* BAND */
+.ch-band{padding:16px 24px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(–d4)}
+.ch-badge{font-family:‘Cinzel’,serif;font-size:9.5px;letter-spacing:.22em;padding:3px 12px;border-radius:2px;white-space:nowrap}
+.village .ch-badge{background:rgba(196,154,10,.1);border:1px solid rgba(196,154,10,.28);color:var(–c-village)}
+.castle  .ch-badge{background:rgba(139,26,26,.1); border:1px solid rgba(139,26,26,.28); color:var(–c-castle)}
+.bene    .ch-badge{background:rgba(90,45,138,.1); border:1px solid rgba(90,45,138,.28); color:var(–c-bene)}
+.moreau  .ch-badge{background:rgba(26,122,74,.1); border:1px solid rgba(26,122,74,.28); color:var(–c-moreau)}
+.factory .ch-badge{background:rgba(45,95,138,.1); border:1px solid rgba(45,95,138,.28); color:var(–c-factory)}
+.ch-title{font-family:‘Cinzel’,serif;font-size:clamp(14px,1.9vw,19px);font-weight:700;color:var(–bone)}
+.ch-cond{margin-left:auto;font-size:10.5px;color:var(–parch);opacity:.48;font-style:italic}
+
+/* SPLIT */
+.split{display:grid;grid-template-columns:minmax(260px,400px) 1fr;min-height:520px}
+@media(max-width:740px){.split{grid-template-columns:1fr}}
+
+/* MAP PANEL */
+.map-panel{background:var(–d2);border-right:1px solid var(–d4);padding:16px;position:sticky;top:49px;height:calc(100vh - 49px);overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+@media(max-width:740px){.map-panel{position:static;height:auto;border-right:none;border-bottom:1px solid var(–d4)}}
+.map-panel-hdr{font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:.18em;color:var(–parch);opacity:.45;margin-bottom:2px}
+
+/* Floor selector */
+.floor-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.ftab{font-family:‘Cinzel’,serif;font-size:9.5px;letter-spacing:.12em;padding:4px 10px;border-radius:2px;border:1px solid var(–d5);background:transparent;color:var(–parch);opacity:.45;cursor:pointer;transition:all .15s}
+.ftab:hover{opacity:.7}
+.ftab.active{opacity:1;background:rgba(255,255,255,.06);border-color:var(–parch)}
+
+/* Map image container */
+.map-img-box{position:relative;border:1px solid var(–d5);border-radius:3px;overflow:hidden;background:var(–d3)}
+.map-img-box img{display:block;width:100%;height:auto;image-rendering:pixelated;filter:brightness(.9) contrast(1.05)}
+.map-floor{display:none}
+.map-floor.active{display:block;position:relative}
+/* SVG overlay */
+.map-floor svg{position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.map-floor svg .pin-g{pointer-events:all}
+
+/* Pin styles */
+.pin-g{cursor:pointer;transition:transform .15s}
+.pin-g:hover{transform:scale(1.25)}
+.pin-g circle{transition:all .2s;r:4.5}
+.pin-g text{font-family:‘Cinzel’,sans-serif;font-size:3.5px;font-weight:700;fill:#fff;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.pin-g.pt circle{fill:rgba(196,154,10,.9);stroke:#e6c040;stroke-width:.6}
+.pin-g.pp circle{fill:rgba(168,40,40,.9); stroke:#e05050;stroke-width:.6}
+.pin-g.pw circle{fill:rgba(45,95,138,.9);  stroke:#70b8e0;stroke-width:.6}
+.pin-g.pwell circle{fill:rgba(26,122,74,.9); stroke:#50d090;stroke-width:.6}
+.pin-g.plb circle{fill:rgba(90,45,138,.9);  stroke:#b080e0;stroke-width:.6}
+.pin-g.lit circle{r:6;stroke-width:1.2;filter:drop-shadow(0 0 4px currentColor)}
+.pin-g.lit.pt{color:#e6c040}
+.pin-g.lit.pp{color:#e05050}
+.pin-g.lit.pw{color:#70b8e0}
+.pin-g.lit.pwell{color:#50d090}
+.pin-g.lit.plb{color:#b080e0}
+
+/* Map legend */
+.map-legend{display:flex;flex-wrap:wrap;gap:5px 14px;margin-top:4px}
+.leg{display:flex;align-items:center;gap:5px;font-size:9.5px;color:var(–parch);opacity:.55}
+.ldot{width:7px;height:7px;border-radius:50%}
+
+/* LIST PANEL */
+.list-panel{padding:16px 16px 48px;overflow-y:auto}
+
+/* ITEM CARDS */
+.icard{background:var(–d2);border:1px solid var(–d4);border-radius:3px;margin-bottom:10px;overflow:hidden;transition:all .2s;cursor:default}
+.icard:hover,.icard.lit{border-color:var(–d5);transform:translateX(2px);box-shadow:-2px 0 0 0 var(–ac,var(–blood))}
+.icard.lit{box-shadow:-3px 0 0 0 var(–ac,var(–blood)),0 3px 18px rgba(0,0,0,.4)}
+.ctop{display:flex;align-items:stretch;min-height:44px}
+.cnum{width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:‘Cinzel Decorative’,serif;font-size:12px;font-weight:700;opacity:.6}
+.chead{flex:1;padding:9px 10px 9px 5px}
+.ctype-row{display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.ctag{font-family:‘Cinzel’,serif;font-size:8.5px;letter-spacing:.18em;padding:1px 6px;border-radius:2px}
+.tt{background:rgba(196,154,10,.1);color:var(–gold);border:1px solid rgba(196,154,10,.22)}
+.tp{background:rgba(168,40,40,.1);color:var(–ember);border:1px solid rgba(168,40,40,.26)}
+.tw{background:rgba(45,95,138,.1);color:#7ab0d0;border:1px solid rgba(45,95,138,.26)}
+.twell{background:rgba(26,122,74,.1);color:#5dba8a;border:1px solid rgba(26,122,74,.26)}
+.tlb{background:rgba(90,45,138,.1);color:#b088e0;border:1px solid rgba(90,45,138,.26)}
+.vtag{font-size:8.5px;padding:1px 6px;border-radius:2px;background:rgba(255,255,255,.04);color:rgba(200,180,150,.44);margin-left:auto;white-space:nowrap}
+.cname{font-family:‘Cinzel’,serif;font-size:13px;font-weight:600;color:var(–bone);line-height:1.3}
+.ctgl{width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(–parch);opacity:.28;cursor:pointer;transition:transform .18s,opacity .18s}
+.icard.open .ctgl{transform:rotate(180deg);opacity:.55}
+.cbody{display:none;padding:0 10px 12px 37px;border-top:1px solid var(–d4);animation:copen .18s ease}
+@keyframes copen{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+.icard.open .cbody{display:block}
+.ir{display:flex;gap:6px;margin-top:7px;font-size:11.5px;line-height:1.5;align-items:flex-start}
+.il{font-family:‘Cinzel’,serif;font-size:9px;letter-spacing:.08em;color:rgba(200,180,150,.36);min-width:36px;flex-shrink:0;padding-top:1px}
+.iv{color:var(–parch)}
+.solbox{margin-top:8px;padding:9px 11px;background:var(–d3);border-left:2px solid var(–ember);border-radius:2px}
+.sl{font-family:‘Cinzel’,serif;font-size:8.5px;letter-spacing:.18em;color:var(–ember);display:block;margin-bottom:5px}
+.solbox p{font-size:11px;color:var(–parch);line-height:1.65}
+.code{display:inline-block;background:rgba(192,57,43,.14);border:1px solid rgba(192,57,43,.32);color:var(–ember);font-family:‘Cinzel’,serif;font-size:13px;font-weight:700;letter-spacing:.22em;padding:2px 9px;border-radius:2px;margin:3px 0}
+.rtags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.rt{font-size:9px;padding:2px 7px;border-radius:2px;font-family:‘Cinzel’,serif;letter-spacing:.07em}
+.rg{background:rgba(196,154,10,.1);border:1px solid rgba(196,154,10,.22);color:var(–gold)}
+.rw{background:rgba(139,26,26,.1);border:1px solid rgba(139,26,26,.26);color:#f08080}
+.rp{background:rgba(26,122,74,.1);border:1px solid rgba(26,122,74,.26);color:#5dba8a}
+.rc{background:rgba(90,45,138,.1);border:1px solid rgba(90,45,138,.26);color:#b088e0}
+.rl{background:rgba(200,180,10,.07);border:1px solid rgba(200,180,10,.18);color:var(–amber)}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(–d1)}
+::-webkit-scrollbar-thumb{background:var(–d5);border-radius:3px}
+@media(max-width:480px){.ch-cond{display:none}.ch-band{padding:12px 14px 10px}.ctab{font-size:9.5px;padding:11px 12px 9px}}
+</style>
+
+</head>
+<body>
+
+<header>
+  <span class="hd-icon">🎮</span>
+  <h1>RESIDENT EVIL VILLAGE<br><em>전 챕터 보물 &amp; 퍼즐 맵</em></h1>
+  <div class="orn"><span>✦</span></div>
+  <p class="sub">마을 · 성 · 베네비엔토 · 모로 · 공장</p>
+</header>
+
+<nav class="cnav">
+  <button class="ctab active" data-ch="village"><span>🏚️</span>마을</button>
+  <button class="ctab" data-ch="castle"><span>🏰</span>디미트레스쿠 성</button>
+  <button class="ctab" data-ch="bene"><span>🪆</span>베네비엔토</button>
+  <button class="ctab" data-ch="moreau"><span>🐟</span>모로 저수지</button>
+  <button class="ctab" data-ch="factory"><span>⚙️</span>공장</button>
+</nav>
+
+<!-- ═══════════ VILLAGE ═══════════ -->
+
+<section class="chapter village active" id="ch-village">
+  <div class="ch-band">
+    <span class="ch-badge">마을</span>
+    <h2 class="ch-title">🏚️ 초반 마을 — 전 방문 보물·퍼즐</h2>
+    <span class="ch-cond">1차~3차 방문 / 우물 핸들</span>
+  </div>
+  <div class="split">
+    <div class="map-panel">
+      <div class="map-panel-hdr">▸ VILLAGE MAP</div>
+      <div class="map-img-box">
+        <div class="map-floor active" id="vmap-main">
+          <img src="https://www.evilresource.com/maps/re8_village/map.gif" alt="Village Map" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <!-- 1: 성문 퍼즐 -->
+            <g class="pin-g pp" data-pin="v1" data-ch="village" onclick="pinClick('v1','village')">
+              <circle cx="47" cy="7"/><text x="47" y="7">1</text>
+            </g>
+            <!-- 2: 성모상 크리스탈 -->
+            <g class="pin-g pt" data-pin="v2" data-ch="village" onclick="pinClick('v2','village')">
+              <circle cx="18" cy="50"/><text x="18" y="50">2</text>
+            </g>
+            <!-- 3: 교회 나무 염소 몸통 -->
+            <g class="pin-g pt" data-pin="v3" data-ch="village" onclick="pinClick('v3','village')">
+              <circle cx="16" cy="36"/><text x="16" y="36">3</text>
+            </g>
+            <!-- 4: 처녀의 석판 교회 -->
+            <g class="pin-g pp" data-pin="v4" data-ch="village" onclick="pinClick('v4','village')">
+              <circle cx="24" cy="34"/><text x="24" y="34">4</text>
+            </g>
+            <!-- 5: 악기 제작자 집 (27-09-17) -->
+            <g class="pin-g pp" data-pin="v5" data-ch="village" onclick="pinClick('v5','village')">
+              <circle cx="74" cy="50"/><text x="74" y="50">5</text>
+            </g>
+            <!-- 6: 빨간 굴뚝 집 -->
+            <g class="pin-g pt" data-pin="v6" data-ch="village" onclick="pinClick('v6','village')">
+              <circle cx="74" cy="34"/><text x="74" y="34">6</text>
+            </g>
+            <!-- 7: 루이자 목걸이 -->
+            <g class="pin-g pt" data-pin="v7" data-ch="village" onclick="pinClick('v7','village')">
+              <circle cx="78" cy="64"/><text x="78" y="64">7</text>
+            </g>
+            <!-- 8: 루이자 유산 / 체사레의 잔 -->
+            <g class="pin-g pt" data-pin="v8" data-ch="village" onclick="pinClick('v8','village')">
+              <circle cx="44" cy="62"/><text x="44" y="62">8</text>
+            </g>
+            <!-- 9: 황금 부인상 (선착장) -->
+            <g class="pin-g pp" data-pin="v9" data-ch="village" onclick="pinClick('v9','village')">
+              <circle cx="47" cy="82"/><text x="47" y="82">9</text>
+            </g>
+            <!-- 10: GM79 동부 구시가 -->
+            <g class="pin-g pw" data-pin="v10" data-ch="village" onclick="pinClick('v10','village')">
+              <circle cx="80" cy="20"/><text x="80" y="20">10</text>
+            </g>
+            <!-- W1 동쪽 민가 우물 -->
+            <g class="pin-g pwell" data-pin="v11" data-ch="village" onclick="pinClick('v11','village')">
+              <circle cx="66" cy="44"/><text x="66" y="44" style="font-size:3px">W1</text>
+            </g>
+            <!-- W2 교회 뒤 우물 -->
+            <g class="pin-g pwell" data-pin="v12" data-ch="village" onclick="pinClick('v12','village')">
+              <circle cx="18" cy="28"/><text x="18" y="28" style="font-size:3px">W2</text>
+            </g>
+            <!-- W3 마을 광장 우물 -->
+            <g class="pin-g pwell" data-pin="v13" data-ch="village" onclick="pinClick('v13','village')">
+              <circle cx="48" cy="43"/><text x="48" y="43" style="font-size:3px">W3</text>
+            </g>
+            <!-- W4 정원사 우물 -->
+            <g class="pin-g pwell" data-pin="v14" data-ch="village" onclick="pinClick('v14','village')">
+              <circle cx="76" cy="76"/><text x="76" y="76" style="font-size:3px">W4</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="map-legend">
+        <div class="leg"><div class="ldot" style="background:#c49a0a"></div>보물</div>
+        <div class="leg"><div class="ldot" style="background:#c0392b"></div>퍼즐</div>
+        <div class="leg"><div class="ldot" style="background:#2d5f8a"></div>무기</div>
+        <div class="leg"><div class="ldot" style="background:#1a7a4a"></div>우물</div>
+      </div>
+    </div>
+
+```
+<div class="list-panel">
+
+  <div class="icard" id="card-v1" data-pin="v1" style="--ac:var(--ember)">
+    <div class="ctop"><div class="cnum" style="color:var(--ember)">1</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">1차</span></div><div class="cname">처녀와 요괴의 석판 — 성문</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">마을 북쪽 성문</span></div>
+      <div class="solbox"><span class="sl">▶ 해법</span><p>① 처녀의 석판 → 교회 내부<br>② 요괴의 석판 → 루이자 집 앞 헛간 근처<br>두 석판을 성문에 끼워 드라쿨라 성 진입</p></div>
+      <div class="rtags"><span class="rt rw">성 진입 언락</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-v2" data-pin="v2" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">2</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">1차</span></div><div class="cname">크리스탈 조각 — 성모상</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">공동묘지 인근 성모상 머리 위</span></div>
+      <div class="ir"><span class="il">방법</span><span class="iv">성모상 머리 부분을 총으로 사격 → 낙하</span></div>
+      <div class="rtags"><span class="rt rg">고가 매각</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-v3" data-pin="v3" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">3</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">1차</span></div><div class="cname">나무 염소 (몸통) — 교회</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">교회 안쪽 방 보물 상자</span></div>
+      <div class="ir"><span class="il">조합</span><span class="iv">마을 광장 우물(W3)에서 머리 수거 후 결합</span></div>
+      <div class="rtags"><span class="rt rc">결합 필요</span><span class="rt rg">결합 후 고가 매각</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-v4" data-pin="v4" style="--ac:var(--ember)">
+    <div class="ctop"><div class="cnum" style="color:var(--ember)">4</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">1차</span></div><div class="cname">처녀의 석판 — 교회 내부</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">교회 내부 (나무 염소 몸통 상자 인근)</span></div>
+      <div class="ir"><span class="il">용도</span><span class="iv">요괴의 석판과 함께 성문 삽입 → 성 진입</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-v5" data-pin="v5" style="--ac:var(--ember)">
+    <div class="ctop"><div class="cnum" style="color:var(--ember)">5</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">2차 (철 인장 열쇠)</span></div><div class="cname">마에스트로 수집품 — 찬장 자물쇠</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">악기 제작자의 집 (루티에 집)</span></div>
+      <div class="ir"><span class="il">선행</span><span class="iv">정원사 오두막 → 루티에 열쇠 수거 후 진입</span></div>
+      <div class="solbox"><span class="sl">▶ 찬장 비밀번호</span><p>방 안 아이의 생일 벽보 힌트:<br><span class="code">27 — 09 — 17</span></p></div>
+      <div class="rtags"><span class="rt rg">Steel Hraesvelgr</span><span class="rt rw">F2 고용량 탄창</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-v6" data-pin="v6" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">6</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">2차</span></div><div class="cname">빨간 굴뚝 집 보물</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">마을 동쪽 빨간 굴뚝 집</span></div>
+      <div class="ir"><span class="il">진입</span><span class="iv">정면 문 잠김 → 옆 사다리 → 지붕 → 구멍 낙하</span></div>
+      <div class="rtags"><span class="rt rw">M1911 권총 / 부품</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-v7" data-pin="v7" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">7</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">성 클리어 후</span></div><div class="cname">루이자의 목걸이</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">루이자 집 터 앞 계단 보물 상자</span></div>
+      <div class="ir"><span class="il">조합</span><span class="iv">목걸이 검사 → 크리스탈 분리 + 루이자 열쇠 획득</span></div>
+      <div class="rtags"><span class="rt rc">크리스탈+열쇠 분리</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-v8" data-pin="v8" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">8</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">2차</span></div><div class="cname">루이자의 유산 — 체사레의 잔</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">제단 서쪽 동굴 (루이자 열쇠 사용)</span></div>
+      <div class="ir"><span class="il">선행</span><span class="iv">루이자 목걸이 검사로 열쇠 획득 필수</span></div>
+      <div class="rtags"><span class="rt rg">최고가 매각 ★★★</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-v9" data-pin="v9" style="--ac:var(--ember)">
+    <div class="ctop"><div class="cnum" style="color:var(--ember)">9</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">3차 (크랭크)</span></div><div class="cname">황금 부인상 — 강변 화로 퍼즐 ⚠️</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">론로드 선착장 → 보트 북상 → 성 지하</span></div>
+      <div class="ir"><span class="il">조건</span><span class="iv">크랭크 + 보트 열쇠 보유</span></div>
+      <div class="solbox"><span class="sl">▶ 화로 퍼즐</span><p>① 중앙 횃불로 좌우 화로 점화 → 좀비 스폰<br>② 좀비에게 불 붙이기 → 불붙은 좀비로 마지막 화로 점화<br>③ 최종 문 개방 → 황금 부인상</p></div>
+      <div class="rtags"><span class="rt rg">황금 부인상 (최고가)</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-v10" data-pin="v10" style="--ac:#7ab0d0">
+    <div class="ctop"><div class="cnum" style="color:#7ab0d0">10</div><div class="chead"><div class="ctype-row"><span class="ctag tw">무기</span><span class="vtag">2차 (철 인장 열쇠)</span></div><div class="cname">GM 79 그레네이드 런처</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">동부 구시가 철 인장 열쇠 잠금 문</span></div>
+      <div class="ir"><span class="il">선행</span><span class="iv">성 피아노 퍼즐 → 철 인장 열쇠 획득 필수</span></div>
+      <div class="rtags"><span class="rt rw">GM 79 런처</span><span class="rt rl">중복 시 20,000 Lei</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-v11" data-pin="v11" style="--ac:#5dba8a">
+    <div class="ctop"><div class="cnum" style="color:#5dba8a">W1</div><div class="chead"><div class="ctype-row"><span class="ctag twell">우물</span><span class="vtag">우물 핸들</span></div><div class="cname">동쪽 민가 우물 — 동물 귀한 고기</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody"><div class="rtags"><span class="rt rp">체력 영구 증강 재료</span></div></div>
+  </div>
+  <div class="icard" id="card-v12" data-pin="v12" style="--ac:#5dba8a">
+    <div class="ctop"><div class="cnum" style="color:#5dba8a">W2</div><div class="chead"><div class="ctype-row"><span class="ctag twell">우물</span><span class="vtag">우물 핸들</span></div><div class="cname">교회 뒤 우물 — 진귀한 목걸이</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody"><div class="rtags"><span class="rt rc">조합용 목걸이 본체</span></div></div>
+  </div>
+  <div class="icard" id="card-v13" data-pin="v13" style="--ac:#5dba8a">
+    <div class="ctop"><div class="cnum" style="color:#5dba8a">W3</div><div class="chead"><div class="ctype-row"><span class="ctag twell">우물</span><span class="vtag">우물 핸들</span></div><div class="cname">마을 광장 우물 — 나무 염소 (머리)</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody"><div class="rtags"><span class="rt rc">교회 몸통과 결합 → 고가 매각</span></div></div>
+  </div>
+  <div class="icard" id="card-v14" data-pin="v14" style="--ac:#5dba8a">
+    <div class="ctop"><div class="cnum" style="color:#5dba8a">W4</div><div class="chead"><div class="ctype-row"><span class="ctag twell">우물</span><span class="vtag">우물 핸들</span></div><div class="cname">정원사 집 우물 — 마달리나 (몸통)</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody"><div class="rtags"><span class="rt rc">머리와 결합 필수</span></div></div>
+  </div>
+
+</div>
+```
+
+  </div>
+</section>
+
+<!-- ═══════════ CASTLE ═══════════ -->
+
+<section class="chapter castle" id="ch-castle">
+  <div class="ch-band">
+    <span class="ch-badge">성 디미트레스쿠</span>
+    <h2 class="ch-title">🏰 캐슬 디미트레스쿠 — 보물·퍼즐</h2>
+    <span class="ch-cond">1F · 2F · B1 · 지붕</span>
+  </div>
+  <div class="split">
+    <div class="map-panel">
+      <div class="map-panel-hdr">▸ CASTLE MAP (층별 선택)</div>
+      <div class="floor-tabs">
+        <button class="ftab active" data-ch="castle" data-floor="c1f" onclick="switchFloor('castle','c1f')">1F</button>
+        <button class="ftab" data-ch="castle" data-floor="c2f" onclick="switchFloor('castle','c2f')">2F</button>
+        <button class="ftab" data-ch="castle" data-floor="cb1" onclick="switchFloor('castle','cb1')">B1</button>
+        <button class="ftab" data-ch="castle" data-floor="crf" onclick="switchFloor('castle','crf')">지붕</button>
+      </div>
+      <div class="map-img-box">
+        <!-- 1F -->
+        <div class="map-floor active" id="c1f">
+          <img src="https://www.evilresource.com/maps/re8_castle1f/map.gif" alt="Castle 1F" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <g class="pin-g pp" data-pin="c5" data-ch="castle" onclick="pinClick('c5','castle')">
+              <circle cx="68" cy="70"/><text x="68" y="70">5</text>
+            </g>
+            <g class="pin-g pt" data-pin="c6" data-ch="castle" onclick="pinClick('c6','castle')">
+              <circle cx="28" cy="35"/><text x="28" y="35">6</text>
+            </g>
+          </svg>
+        </div>
+        <!-- 2F -->
+        <div class="map-floor" id="c2f">
+          <img src="https://www.evilresource.com/maps/re8_castle2f/map.gif" alt="Castle 2F" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <g class="pin-g pp" data-pin="c1" data-ch="castle" onclick="pinClick('c1','castle')">
+              <circle cx="72" cy="30"/><text x="72" y="30">1</text>
+            </g>
+            <g class="pin-g pp" data-pin="c3" data-ch="castle" onclick="pinClick('c3','castle')">
+              <circle cx="28" cy="45"/><text x="28" y="45">3</text>
+            </g>
+            <g class="pin-g pp" data-pin="c4" data-ch="castle" onclick="pinClick('c4','castle')">
+              <circle cx="70" cy="55"/><text x="70" y="55">4</text>
+            </g>
+            <g class="pin-g pp" data-pin="c5b" data-ch="castle" onclick="pinClick('c5','castle')">
+              <circle cx="50" cy="72"/><text x="50" y="72">5↓</text>
+            </g>
+          </svg>
+        </div>
+        <!-- B1 -->
+        <div class="map-floor" id="cb1">
+          <img src="https://www.evilresource.com/maps/re8_castleb1/map.gif" alt="Castle B1" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <g class="pin-g pp" data-pin="c7" data-ch="castle" onclick="pinClick('c7','castle')">
+              <circle cx="32" cy="52"/><text x="32" y="52">7</text>
+            </g>
+            <g class="pin-g pp" data-pin="c8" data-ch="castle" onclick="pinClick('c8','castle')">
+              <circle cx="76" cy="66"/><text x="76" y="66">8</text>
+            </g>
+          </svg>
+        </div>
+        <!-- RF/지붕 -->
+        <div class="map-floor" id="crf">
+          <img src="https://www.evilresource.com/maps/re8_castlerf/map.gif" alt="Castle RF" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <g class="pin-g pt" data-pin="c2" data-ch="castle" onclick="pinClick('c2','castle')">
+              <circle cx="45" cy="40"/><text x="45" y="40">2</text>
+            </g>
+            <g class="pin-g pt" data-pin="c9" data-ch="castle" onclick="pinClick('c9','castle')">
+              <circle cx="55" cy="65"/><text x="55" y="65">9</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="map-legend">
+        <div class="leg"><div class="ldot" style="background:#c49a0a"></div>보물</div>
+        <div class="leg"><div class="ldot" style="background:#c0392b"></div>퍼즐</div>
+      </div>
+    </div>
+
+```
+<div class="list-panel">
+
+  <div class="icard" id="card-c1" data-pin="c1" style="--ac:var(--ember)">
+    <div class="ctop"><div class="cnum" style="color:var(--ember)">1</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">2F 아틀리에</span></div><div class="cname">5개 종 퍼즐 → 다락방 진입</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">2F 아틀리에 (초상화실)</span></div>
+      <div class="solbox"><span class="sl">▶ 종 5개 위치</span><p>① 벽 시계 기계 옆 흔들리는 종<br>② 시계 기계 왼쪽 석상 근처<br>③ 맞은편 그림 액자 아래 구석<br>④ 계단 위 샹들리에 사격 → 위 숨겨진 종<br>⑤ 채광창 사격 → 외부 종<br>→ 초상화 뒤 통로 → 다락방</p></div>
+      <div class="rtags"><span class="rt rw">다락방 접근 언락</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-c2" data-pin="c2" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">2</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">RF 다락방</span></div><div class="cname">보물 지도 (Castle Treasure Map)</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">다락방 중앙 테이블 위</span></div>
+      <div class="ir"><span class="il">용도</span><span class="iv">B1 특별 방(관 퍼즐) 위치 지시 → Azure Eye 경로</span></div>
+      <div class="ir"><span class="il">선행</span><span class="iv">5종 퍼즐 완료 + 철 인장 열쇠 보유 필수</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-c3" data-pin="c3" style="--ac:var(--ember)">
+    <div class="ctop"><div class="cnum" style="color:var(--ember)">3</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">2F 오페라 홀</span></div><div class="cname">피아노 퍼즐 → 철 인장 열쇠</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">2F 오페라 홀 피아노</span></div>
+      <div class="solbox"><span class="sl">▶ 해법</span><p>피아노 앞 악보에 맞춰 건반 순서대로 연주.<br>성공 시 피아노 안에서 <b>철 인장 열쇠</b> 자동 획득.</p></div>
+      <div class="rtags"><span class="rt rw">철 인장 열쇠 (Iron Insignia Key)</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-c4" data-pin="c4" style="--ac:var(--ember)">
+    <div class="ctop"><div class="cnum" style="color:var(--ember)">4</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">2F Hall of Four</span></div><div class="cname">꽃·칼 공 다이오라마 퍼즐</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">2F Hall of Four 내 다이오라마</span></div>
+      <div class="solbox"><span class="sl">▶ 해법</span><p>Flower Swords Ball을 다이오라마 구멍에 넣고<br>기울여서 목표 지점까지 굴리기.</p></div>
+      <div class="rtags"><span class="rt rg">보물 아이템 획득</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-c5" data-pin="c5" style="--ac:var(--ember)">
+    <div class="ctop"><div class="cnum" style="color:var(--ember)">5</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">1F Hall of Ablution</span></div><div class="cname">4 조각상 방향 퍼즐</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">1F Hall of Ablution (와인·혈액 수조)</span></div>
+      <div class="solbox"><span class="sl">▶ 조각상 4개 (말·여성·숙녀·세 거지)</span><p>각 조각상을 올바른 방향으로 회전.<br>정렬 완료 → 수조 배수 → 하부 통로 개방. (스토리 필수)</p></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-c6" data-pin="c6" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">6</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">1F 주방</span></div><div class="cname">Crimson Glass — Silver Ring과 조합</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">레이디에게 잡힌 방 내 책상</span></div>
+      <div class="ir"><span class="il">조합</span><span class="iv">Silver Ring + Azure Eye → Azure Eye Ring</span></div>
+      <div class="rtags"><span class="rt rc">결합 필수</span><span class="rt rl">Azure Eye Ring = 12,000 Lei</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-c7" data-pin="c7" style="--ac:var(--ember)">
+    <div class="ctop"><div class="cnum" style="color:var(--ember)">7</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">B1 Hall of War</span></div><div class="cname">Hall of War — 촛대 화로 퍼즐</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">B1 Hall of War</span></div>
+      <div class="solbox"><span class="sl">▶ 해법</span><p>중앙 불붙은 촛대를 양쪽 화로 방향으로 밀기.<br>탄약 불필요. 두 화로 점화 → 다음 구역 개방.</p></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-c8" data-pin="c8" style="--ac:var(--ember)">
+    <div class="ctop"><div class="cnum" style="color:var(--ember)">8</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">B1 특별 방</span></div><div class="cname">관 퍼즐 (Special Chambers) → Azure Eye ⭐</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">B1 특별 방 — 철 인장 열쇠 잠금 문</span></div>
+      <div class="solbox"><span class="sl">▶ 3단계</span><p>① 파이프 폭탄으로 균열 벽 파괴 → 불타는 화로 노출<br>② 가장 가까운 매달린 화로 사격 → 불타는 화로 쪽 스윙 → 점화<br>③ 점화된 화로 → 두 번째 화로 쪽 사격 → 연쇄 점화<br>④ 관 잠금 해제 → Azure Eye 획득</p></div>
+      <div class="rtags"><span class="rt rg">Azure Eye</span><span class="rt rc">Silver Ring + 결합 = 12,000 Lei</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-c9" data-pin="c9" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">9</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">지붕 보스 후</span></div><div class="cname">Crystal Dimitrescu</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">레이디 디미트레스쿠 처치 후 자동 획득</span></div>
+      <div class="rtags"><span class="rt rg">Crystal Dimitrescu (고가 매각)</span></div>
+    </div>
+  </div>
+
+</div>
+```
+
+  </div>
+</section>
+
+<!-- ═══════════ BENEVIENTO ═══════════ -->
+
+<section class="chapter bene" id="ch-bene">
+  <div class="ch-band">
+    <span class="ch-badge">베네비엔토</span>
+    <h2 class="ch-title">🪆 하우스 베네비엔토 — 보물·퍼즐</h2>
+    <span class="ch-cond">무기 사용 불가 · 퍼즐 연쇄</span>
+  </div>
+  <div class="split">
+    <div class="map-panel">
+      <div class="map-panel-hdr">▸ HOUSE BENEVIENTO MAP</div>
+      <div class="floor-tabs">
+        <button class="ftab active" data-ch="bene" data-floor="bent" onclick="switchFloor('bene','bent')">정원 (외부)</button>
+        <button class="ftab" data-ch="bene" data-floor="benb1" onclick="switchFloor('bene','benb1')">B1 (지하)</button>
+      </div>
+      <div class="map-img-box">
+        <div class="map-floor active" id="bent">
+          <img src="https://www.evilresource.com/maps/re8_houseentry/map.gif" alt="Beneviento Entry" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <g class="pin-g plb" data-pin="b6" data-ch="bene" onclick="pinClick('b6','bene')">
+              <circle cx="28" cy="38"/><text x="28" y="38">6</text>
+            </g>
+            <g class="pin-g pt" data-pin="b7" data-ch="bene" onclick="pinClick('b7','bene')">
+              <circle cx="44" cy="84"/><text x="44" y="84">7</text>
+            </g>
+            <g class="pin-g pw" data-pin="b8" data-ch="bene" onclick="pinClick('b8','bene')">
+              <circle cx="72" cy="84"/><text x="72" y="84">8</text>
+            </g>
+          </svg>
+        </div>
+        <div class="map-floor" id="benb1">
+          <img src="https://www.evilresource.com/maps/re8_houseb1/map.gif" alt="Beneviento B1" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <g class="pin-g pp" data-pin="b1" data-ch="bene" onclick="pinClick('b1','bene')">
+              <circle cx="55" cy="45"/><text x="55" y="45">1</text>
+            </g>
+            <g class="pin-g pp" data-pin="b2" data-ch="bene" onclick="pinClick('b2','bene')">
+              <circle cx="78" cy="45"/><text x="78" y="45">2</text>
+            </g>
+            <g class="pin-g pp" data-pin="b3" data-ch="bene" onclick="pinClick('b3','bene')">
+              <circle cx="24" cy="64"/><text x="24" y="64">3</text>
+            </g>
+            <g class="pin-g pp" data-pin="b4" data-ch="bene" onclick="pinClick('b4','bene')">
+              <circle cx="55" cy="64"/><text x="55" y="64">4</text>
+            </g>
+            <g class="pin-g pp" data-pin="b5" data-ch="bene" onclick="pinClick('b5','bene')">
+              <circle cx="78" cy="64"/><text x="78" y="64">5</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="map-legend">
+        <div class="leg"><div class="ldot" style="background:#c49a0a"></div>보물</div>
+        <div class="leg"><div class="ldot" style="background:#c0392b"></div>퍼즐</div>
+        <div class="leg"><div class="ldot" style="background:#5a2d8a"></div>미로</div>
+        <div class="leg"><div class="ldot" style="background:#2d5f8a"></div>무기</div>
+      </div>
+    </div>
+
+```
+<div class="list-panel">
+
+  <div class="icard" id="card-b1" data-pin="b1" style="--ac:var(--c-bene)">
+    <div class="ctop"><div class="cnum" style="color:var(--c-bene)">1</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">B1 인형 작업실</span></div><div class="cname">마네킹 인형 퍼즐</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="solbox"><span class="sl">▶ 인형에서 얻는 아이템</span><p>• 오른팔 → <b>Silver Key</b><br>• 왼쪽 다리 → <b>Winding Key</b><br>• 왼손 반지 → <b>Blood Covered Ring</b></p></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-b2" data-pin="b2" style="--ac:var(--c-bene)">
+    <div class="ctop"><div class="cnum" style="color:var(--c-bene)">2</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">B1 세면실</span></div><div class="cname">반지 세척 → 도어 코드</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="solbox"><span class="sl">▶ 잠금 코드</span><p>피 묻은 반지를 수도꼭지로 세척 → 내부 각인 확인:<br><span class="code">05 — 29 — 11</span></p></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-b3" data-pin="b3" style="--ac:var(--c-bene)">
+    <div class="ctop"><div class="cnum" style="color:var(--c-bene)">3</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">B1 뮤직박스</span></div><div class="cname">뮤직박스 퍼즐 → 트위저</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="solbox"><span class="sl">▶ 실린더 순서 (좌→우 1~5번)</span><p>Cylinder 2 → Slot 1 / Cylinder 4 → Slot 2<br>Cylinder 3 → Slot 5 / Cylinder 4 → Slot 3<br>→ <b>트위저</b> 획득 → 인형 입에서 필름 추출</p></div>
+      <div class="rtags"><span class="rt rw">트위저 → 필름 스트립</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-b4" data-pin="b4" style="--ac:var(--c-bene)">
+    <div class="ctop"><div class="cnum" style="color:var(--c-bene)">4</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">B1 서재</span></div><div class="cname">필름 퍼즐 (프로젝터)</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="solbox"><span class="sl">▶ 필름 5개 순서 (좌→우)</span><p>① 봉제 인형 → ② 마을 책 → ③ 아기<br>→ ④ 뮤직박스 → ⑤ 웨딩 링</p></div>
+      <div class="rtags"><span class="rt rw">Wedding Ring 획득</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-b5" data-pin="b5" style="--ac:var(--c-bene)">
+    <div class="ctop"><div class="cnum" style="color:var(--c-bene)">5</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">B1 아이콘 문</span></div><div class="cname">3 메달 아이콘 문</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="solbox"><span class="sl">▶ 배치 (인형 힌트)</span><p>• 메달 1 → 인형 왼쪽 눈 그림 일치<br>• 메달 2 → 인형 오른팔 그림 일치<br>• 메달 3 → 인형 가슴 내부에서 획득<br><b>아이콘: 날개 있는 까마귀 / 세 개 황금 눈</b></p></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-b6" data-pin="b6" style="--ac:#b088e0">
+    <div class="ctop"><div class="cnum" style="color:#b088e0">6</div><div class="chead"><div class="ctype-row"><span class="ctag tlb">미로</span><span class="vtag">탈출 후 정원 북</span></div><div class="cname">정원 미로 퍼즐 → Onyx Skull</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">볼</span><span class="iv">Sun and Moon Ball → 정원 남쪽 막힌 구역 나무 근처 상자</span></div>
+      <div class="solbox"><span class="sl">▶ 해법</span><p>Sun and Moon Ball 삽입 후 내리막 속도 조절하며 목표 도달.</p></div>
+      <div class="rtags"><span class="rt rl">Onyx Skull — 15,000 Lei</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-b7" data-pin="b7" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">7</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">귀환 후 (모로 전)</span></div><div class="cname">베네비엔토의 보물 — 베렌가리오의 성배</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">베네비엔토 화단 앞 대형 묘비</span></div>
+      <div class="ir"><span class="il">선행</span><span class="iv">마을에서 깨진 석판 수거 후 귀환</span></div>
+      <div class="ir"><span class="il">주의</span><span class="iv">⚠️ 도끼 미니보스 소환 — 권총 다수 탄환 필요</span></div>
+      <div class="rtags"><span class="rt rg">베렌가리오의 성배</span><span class="rt rg">Giant Crystal Axe</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-b8" data-pin="b8" style="--ac:#7ab0d0">
+    <div class="ctop"><div class="cnum" style="color:#7ab0d0">8</div><div class="chead"><div class="ctype-row"><span class="ctag tw">무기</span><span class="vtag">탈출 후 정원 남</span></div><div class="cname">W870 TAC 산탄총</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">탈출 후 정원 남쪽 방향 진행</span></div>
+      <div class="rtags"><span class="rt rw">W870 TAC 산탄총</span></div>
+    </div>
+  </div>
+
+</div>
+```
+
+  </div>
+</section>
+
+<!-- ═══════════ MOREAU ═══════════ -->
+
+<section class="chapter moreau" id="ch-moreau">
+  <div class="ch-band">
+    <span class="ch-badge">모로 저수지</span>
+    <h2 class="ch-title">🐟 모로의 저수지 — 보물·퍼즐</h2>
+    <span class="ch-cond">크랭크 획득 후 탐사 본격화</span>
+  </div>
+  <div class="split">
+    <div class="map-panel">
+      <div class="map-panel-hdr">▸ MOREAU'S RESERVOIR MAP</div>
+      <div class="floor-tabs">
+        <button class="ftab active" data-ch="moreau" data-floor="mres" onclick="switchFloor('moreau','mres')">저수지 본구역</button>
+        <button class="ftab" data-ch="moreau" data-floor="ment" onclick="switchFloor('moreau','ment')">진입로</button>
+      </div>
+      <div class="map-img-box">
+        <div class="map-floor active" id="mres">
+          <img src="https://www.evilresource.com/maps/re8_reservoir1f/map.gif" alt="Moreau Reservoir" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <g class="pin-g plb" data-pin="m1" data-ch="moreau" onclick="pinClick('m1','moreau')">
+              <circle cx="18" cy="20"/><text x="18" y="20">1</text>
+            </g>
+            <g class="pin-g pp" data-pin="m2" data-ch="moreau" onclick="pinClick('m2','moreau')">
+              <circle cx="78" cy="20"/><text x="78" y="20">2</text>
+            </g>
+            <g class="pin-g pw" data-pin="m3" data-ch="moreau" onclick="pinClick('m3','moreau')">
+              <circle cx="18" cy="78"/><text x="18" y="78">3</text>
+            </g>
+            <g class="pin-g pw" data-pin="m4" data-ch="moreau" onclick="pinClick('m4','moreau')">
+              <circle cx="80" cy="72"/><text x="80" y="72">4</text>
+            </g>
+            <g class="pin-g pp" data-pin="m5" data-ch="moreau" onclick="pinClick('m5','moreau')">
+              <circle cx="48" cy="52"/><text x="48" y="52">5</text>
+            </g>
+            <g class="pin-g pt" data-pin="m6" data-ch="moreau" onclick="pinClick('m6','moreau')">
+              <circle cx="50" cy="88"/><text x="50" y="88">6</text>
+            </g>
+          </svg>
+        </div>
+        <div class="map-floor" id="ment">
+          <img src="https://www.evilresource.com/maps/re8_reservoirentry/map.gif" alt="Moreau Entry" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <g class="pin-g plb" data-pin="m1b" data-ch="moreau" onclick="pinClick('m1','moreau')">
+              <circle cx="30" cy="55"/><text x="30" y="55">1↑</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="map-legend">
+        <div class="leg"><div class="ldot" style="background:#c49a0a"></div>보물</div>
+        <div class="leg"><div class="ldot" style="background:#c0392b"></div>퍼즐</div>
+        <div class="leg"><div class="ldot" style="background:#5a2d8a"></div>미로</div>
+        <div class="leg"><div class="ldot" style="background:#2d5f8a"></div>무기</div>
+      </div>
+    </div>
+
+```
+<div class="list-panel">
+
+  <div class="icard" id="card-m1" data-pin="m1" style="--ac:#b088e0">
+    <div class="ctop"><div class="cnum" style="color:#b088e0">1</div><div class="chead"><div class="ctype-row"><span class="ctag tlb">미로</span><span class="vtag">풍차 옆</span></div><div class="cname">풍차 미로 퍼즐 → Charteuse Skull</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">볼</span><span class="iv">Mermaid Ball → 크랭크 후 풍차 옆 문 → 언덕 → 다리 → 상자</span></div>
+      <div class="solbox"><span class="sl">▶ 해법</span><p>Mermaid Ball 삽입. 내리막 속도 조절하며 목표 도달.</p></div>
+      <div class="rtags"><span class="rt rl">Charteuse Skull — 20,000 Lei</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-m2" data-pin="m2" style="--ac:var(--c-moreau)">
+    <div class="ctop"><div class="cnum" style="color:var(--c-moreau)">2</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">수문 제어실</span></div><div class="cname">수문 배색 퍼즐</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">조건</span><span class="iv">크랭크로 풍차 전력 복구 후 조작 가능</span></div>
+      <div class="solbox"><span class="sl">▶ 색상 배열 (위→아래, 좌→우)</span><p>상단: <b>파랑 / 하양 / 주황</b><br>중단: <b>하양 / 주황 / 검정</b><br>하단: <b>주황 / 파랑 / 파랑</b></p></div>
+      <div class="rtags"><span class="rt rw">수문 개방 → 저수지 통행</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-m3" data-pin="m3" style="--ac:#7ab0d0">
+    <div class="ctop"><div class="cnum" style="color:#7ab0d0">3</div><div class="chead"><div class="ctype-row"><span class="ctag tw">무기</span><span class="vtag">모로 처치 후</span></div><div class="cname">M1851 울프스베인 마그넘</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">모로 실험장 끝 건물 → 벽 구멍 통과</span></div>
+      <div class="ir"><span class="il">조건</span><span class="iv">크랭크로 게이트 개방 (모로 처치 후)</span></div>
+      <div class="ir"><span class="il">주의</span><span class="iv">⚠️ 진입 즉시 바르콜락(늑대인간) 스폰</span></div>
+      <div class="rtags"><span class="rt rw">M1851 울프스베인</span><span class="rt rl">중복 시 30,000 Lei</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-m4" data-pin="m4" style="--ac:#7ab0d0">
+    <div class="ctop"><div class="cnum" style="color:#7ab0d0">4</div><div class="chead"><div class="ctype-row"><span class="ctag tw">무기</span><span class="vtag">2차 방문 (철 인장)</span></div><div class="cname">GM 79 그레네이드 런처 (동부 구시가)</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">동부 구시가 철 인장 열쇠 잠금 문</span></div>
+      <div class="rtags"><span class="rt rw">GM 79 런처</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-m5" data-pin="m5" style="--ac:var(--ember)">
+    <div class="ctop"><div class="cnum" style="color:var(--ember)">5</div><div class="chead"><div class="ctype-row"><span class="ctag tp">퍼즐</span><span class="vtag">보트 북진 → 성 지하</span></div><div class="cname">황금 부인상 — 강변 화로 퍼즐</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">론로드 보트 북상 → 2번째 선착장 → 성 지하</span></div>
+      <div class="solbox"><span class="sl">▶ 화로 퍼즐</span><p>① 중앙 횃불로 좌우 외부 화로 점화 (좀비 스폰)<br>② 좀비에게 불 붙이기 → 불붙은 좀비로 마지막 화로 점화<br>③ 최종 문 개방 → 황금 부인상</p></div>
+      <div class="rtags"><span class="rt rg">황금 부인상 (최고가)</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-m6" data-pin="m6" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">6</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">모로 처치 후</span></div><div class="cname">Crystal Moreau</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">살바토르 모로 처치 → 자동 획득</span></div>
+      <div class="rtags"><span class="rt rl">Crystal Moreau — 40,000 Lei</span></div>
+    </div>
+  </div>
+
+</div>
+```
+
+  </div>
+</section>
+
+<!-- ═══════════ FACTORY ═══════════ -->
+
+<section class="chapter factory" id="ch-factory">
+  <div class="ch-band">
+    <span class="ch-badge">하이젠베르그 공장</span>
+    <h2 class="ch-title">⚙️ 하이젠베르그 공장 — 보물·퍼즐</h2>
+    <span class="ch-cond">⚠️ 공장 진입 = 마을 복귀 불가 — 사전 완료 필수</span>
+  </div>
+  <div class="split">
+    <div class="map-panel">
+      <div class="map-panel-hdr">▸ HEISENBERG'S FACTORY MAP</div>
+      <div class="floor-tabs">
+        <button class="ftab active" data-ch="factory" data-floor="fb4" onclick="switchFloor('factory','fb4')">B4 (미로·주조)</button>
+        <button class="ftab" data-ch="factory" data-floor="fb2" onclick="switchFloor('factory','fb2')">B2 (볼 주형)</button>
+        <button class="ftab" data-ch="factory" data-floor="fb3" onclick="switchFloor('factory','fb3')">B3 (이동 구역)</button>
+        <button class="ftab" data-ch="factory" data-floor="f1f" onclick="switchFloor('factory','f1f')">1F (입구)</button>
+      </div>
+      <div class="map-img-box">
+        <div class="map-floor active" id="fb4">
+          <img src="https://www.evilresource.com/maps/re8_factoryb4/map.gif" alt="Factory B4" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <g class="pin-g pt" data-pin="f3" data-ch="factory" onclick="pinClick('f3','factory')">
+              <circle cx="34" cy="62"/><text x="34" y="62">3</text>
+            </g>
+            <g class="pin-g plb" data-pin="f4" data-ch="factory" onclick="pinClick('f4','factory')">
+              <circle cx="72" cy="46"/><text x="72" y="46">4</text>
+            </g>
+          </svg>
+        </div>
+        <div class="map-floor" id="fb2">
+          <img src="https://www.evilresource.com/maps/re8_factoryb2/map.gif" alt="Factory B2" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <g class="pin-g pt" data-pin="f2" data-ch="factory" onclick="pinClick('f2','factory')">
+              <circle cx="65" cy="40"/><text x="65" y="40">2</text>
+            </g>
+          </svg>
+        </div>
+        <div class="map-floor" id="fb3">
+          <img src="https://www.evilresource.com/maps/re8_factoryb3/map.gif" alt="Factory B3" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <g class="pin-g pt" data-pin="f5" data-ch="factory" onclick="pinClick('f5','factory')">
+              <circle cx="45" cy="72"/><text x="45" y="72">5</text>
+            </g>
+          </svg>
+        </div>
+        <div class="map-floor" id="f1f">
+          <img src="https://www.evilresource.com/maps/re8_factory1f/map.gif" alt="Factory 1F" loading="lazy">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <g class="pin-g pw" data-pin="f1" data-ch="factory" onclick="pinClick('f1','factory')">
+              <circle cx="60" cy="45"/><text x="60" y="45">1</text>
+            </g>
+            <g class="pin-g pw" data-pin="f6" data-ch="factory" onclick="pinClick('f6','factory')">
+              <circle cx="40" cy="65"/><text x="40" y="65">6</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="map-legend">
+        <div class="leg"><div class="ldot" style="background:#c49a0a"></div>보물</div>
+        <div class="leg"><div class="ldot" style="background:#5a2d8a"></div>미로</div>
+        <div class="leg"><div class="ldot" style="background:#2d5f8a"></div>무기</div>
+      </div>
+    </div>
+
+```
+<div class="list-panel">
+
+  <div class="icard" id="card-f1" data-pin="f1" style="--ac:#7ab0d0">
+    <div class="ctop"><div class="cnum" style="color:#7ab0d0">1</div><div class="chead"><div class="ctype-row"><span class="ctag tw">무기</span><span class="vtag">1F 진입 초반</span></div><div class="cname">Dragoon (저격 소총)</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">1F 진행 중 보관 구역 내부</span></div>
+      <div class="rtags"><span class="rt rw">Dragoon 저격 소총</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-f2" data-pin="f2" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">2</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">B2 그라인더</span></div><div class="cname">Ball Mold 수거</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">B2 그라인더 파괴 → 위 방 이동 → 수레 밀기 → 벤트 통로</span></div>
+      <div class="ir"><span class="il">용도</span><span class="iv">B4 주조실 Casting Machine에서 Iron Horse Ball 제작</span></div>
+      <div class="rtags"><span class="rt rc">B4 미로 퍼즐 선행</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-f3" data-pin="f3" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">3</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">B4 주조실</span></div><div class="cname">Iron Horse Ball 주조 (Casting Machine)</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">B4 Foundry (주조실) Casting Machine</span></div>
+      <div class="ir"><span class="il">방법</span><span class="iv">Ball Mold를 Casting Machine에 삽입 → Iron Horse Ball 획득</span></div>
+      <div class="rtags"><span class="rt rc">B4 미로 전용 볼</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-f4" data-pin="f4" style="--ac:#b088e0">
+    <div class="ctop"><div class="cnum" style="color:#b088e0">4</div><div class="chead"><div class="ctype-row"><span class="ctag tlb">미로</span><span class="vtag">B4 동쪽 방</span></div><div class="cname">공장 미로 퍼즐 (최고 난이도)</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">B4 동쪽 방 (엘리베이터·듀크 맞은편)</span></div>
+      <div class="solbox"><span class="sl">▶ 해법</span><p>Iron Horse Ball 삽입. 회전하는 기어와 타이밍 맞춰 이동.<br>기어 회전 주기 숙지 필수 — 전 미로 중 가장 어려움.</p></div>
+      <div class="rtags"><span class="rt rl">미로 보상 아이템 (고가)</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-f5" data-pin="f5" style="--ac:var(--gold)">
+    <div class="ctop"><div class="cnum" style="color:var(--gold)">5</div><div class="chead"><div class="ctype-row"><span class="ctag tt">보물</span><span class="vtag">B3 요새 (4번째 플라스크 후)</span></div><div class="cname">Guglielmo's Plate</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">요새 4번째 플라스크 획득 후 계단 하강 → 왼쪽</span></div>
+      <div class="ir"><span class="il">비고</span><span class="iv">스토리 경로 상 자연스럽게 획득 가능 — 거의 놓치지 않음</span></div>
+      <div class="rtags"><span class="rt rl">Guglielmo's Plate — 25,000 Lei</span></div>
+    </div>
+  </div>
+
+  <div class="icard" id="card-f6" data-pin="f6" style="--ac:#7ab0d0">
+    <div class="ctop"><div class="cnum" style="color:#7ab0d0">6</div><div class="chead"><div class="ctype-row"><span class="ctag tw">무기</span><span class="vtag">공장 후반</span></div><div class="cname">STAKE 마그넘 부품</div></div><div class="ctgl" onclick="toggleCard(this)">▼</div></div>
+    <div class="cbody">
+      <div class="ir"><span class="il">위치</span><span class="iv">공장 후반 진행 중 획득</span></div>
+      <div class="ir"><span class="il">⚠️ 경고</span><span class="iv">공장 진입 후 마을 복귀 불가 — 진입 전 마을 보물 100% 완료 권장</span></div>
+      <div class="rtags"><span class="rt rw">STAKE 마그넘 부품</span></div>
+    </div>
+  </div>
+
+</div>
+```
+
+  </div>
+</section>
+
+<script>
+// Tab switching
+document.querySelectorAll('.ctab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.ctab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.chapter').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('ch-' + t.dataset.ch).classList.add('active');
+  });
+});
+
+// Floor switching
+function switchFloor(ch, floorId) {
+  const sec = document.getElementById('ch-' + ch);
+  sec.querySelectorAll('.map-floor').forEach(f => f.classList.remove('active'));
+  sec.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+  const target = document.getElementById(floorId);
+  if (target) target.classList.add('active');
+  sec.querySelectorAll('.ftab[data-floor="' + floorId + '"]').forEach(b => b.classList.add('active'));
+}
+
+// Pin → card interaction
+function pinClick(pinId, chId) {
+  const ch = document.getElementById('ch-' + chId);
+  ch.querySelectorAll('.pin-g').forEach(p => p.classList.remove('lit'));
+  ch.querySelectorAll('.icard').forEach(c => c.classList.remove('lit'));
+
+  ch.querySelectorAll(`[data-pin="${pinId}"]`).forEach(p => p.classList.add('lit'));
+  const card = document.getElementById('card-' + pinId);
+  if (card) {
+    card.classList.add('lit');
+    if (!card.classList.contains('open')) card.classList.add('open');
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// Card hover → highlight pins
+document.querySelectorAll('.icard').forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    const ch = card.closest('.chapter');
+    const pid = card.dataset.pin;
+    ch.querySelectorAll('.pin-g').forEach(p => p.classList.remove('lit'));
+    ch.querySelectorAll(`[data-pin="${pid}"]`).forEach(p => p.classList.add('lit'));
+  });
+  card.addEventListener('mouseleave', () => {
+    const ch = card.closest('.chapter');
+    if (!card.classList.contains('lit'))
+      ch.querySelectorAll('.pin-g').forEach(p => p.classList.remove('lit'));
+  });
+});
+
+// Toggle card open/close
+function toggleCard(btn) {
+  btn.closest('.icard').classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
